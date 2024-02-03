@@ -220,7 +220,6 @@
   environment.systemPackages = with pkgs; [
      vim
      wget
-     git
      xfce.xfce4-terminal
      xfce.thunar
      xfce.thunar-volman
@@ -263,6 +262,12 @@
   #   pinentryFlavor = "curses";
   #   enableSSHSupport = true;
   #};
+
+  programs.git = {
+    enable = true;
+    package = pkgs.gitFull;
+    config.credential.helper = "libsecret";
+  };
 
   # don't install documentation i don't use
   documentation.enable = true; # documentation of packages
