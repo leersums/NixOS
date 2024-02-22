@@ -11,37 +11,8 @@
     ];
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.hostName = "keoldale"; # Define your hostname.
-
-  # Pick only one of the below networking options.
-  networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.wireless.userControlled.enable = true;
-  networking.wireless.networks = {
-    LotjeAanDeLindelaan = { 
-       #pskRaw="67ed7b21a609f1cc518aa540605106b6e994ab70663a51ae16382a175a06343d";
-       psk="41052409825673181655";
-       priority = 1;
-    };
-
-    "FRITZ sagittarius" = {
-       psk="Rl28115!";
-    };
-
-    FreeWiFi = {};
-
-    "Hoylake" = {
-       pskRaw="0791410e88762869286eee04b39616a13114bb602692c8ba1da75df456813837";
-     };
-
-    "App_Vacances" = {
-       psk="jomini-baulet3";
-    };
-  };
-
-  # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  # boot.loader.systemd-boot.enable = true;
+  # boot.loader.efi.canTouchEfiVariables = true;
 
   # Set your time zone.
   time.timeZone = "Europe/Amsterdam";
@@ -103,10 +74,10 @@
   environment.sessionVariables.WLR_NO_HARDWARE_CURSORSS = "1";
 
 
-  hardware = {
-     opengl.enable = true;
-     nvidia.modesetting.enable = true;
-  };
+#  hardware = {
+#     opengl.enable = true;
+#     nvidia.modesetting.enable = true;
+#  };
 
   xdg.portal = {
     enable = true;
@@ -172,7 +143,7 @@
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true;
+  # services.xserver.libinput.enable = true;
 
   #enable openrazer support
   hardware.openrazer.enable = true;
@@ -215,6 +186,15 @@
  #    programs.bash.enable = true;
  # };
 
+  users.users.leersumsm = {
+     isNormalUser = true;
+     home = "/home/leersumsm";
+     initialPassword = "P@ssw0rd!";
+     description = "Sarah May";
+     extraGroups = [ "dailout" "openrazer" ]; # Enable ‘sudo’ for the user.
+     # openssh.authorizedKeys.keys = ["..."];
+   };
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -236,6 +216,26 @@
          mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true" ];
           })
      )
+     (vscode-with-extensions.override {
+        vscode = vscodium;
+        vscodeExtensions = with vscode-extensions; [
+        bbenoist.nix
+        ms-python.python
+        ms-vscode.PowerShell
+        #ms-vscode.cpptools
+        twxs.cmake
+        rust-lang.rust-analyzer
+        ms-azuretools.vscode-docker
+        ms-vscode-remote.remote-ssh
+        ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+        {
+           name = "remote-ssh-edit";
+           publisher = "ms-vscode-remote";
+           version = "0.47.2";
+           sha256 = "1hp6gjh4xp2m1xlm1jsdzxw9d8frkiidhph6nvl24d0h8z34w49g";
+        }
+        ];
+     })
      polkit
      btop
      dunst

@@ -8,6 +8,10 @@
 
   outputs = { self, nixpkgs, home-manager }:
     {
+      security.sudo = {
+        enable = true;
+        wheelNeedsPassword = true;
+      };
       nixosConfigurations = {
         keoldale = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
@@ -32,5 +36,5 @@
                     ];
         };
       };
-    };
+     };
 }
